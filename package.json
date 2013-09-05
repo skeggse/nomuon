@@ -1,0 +1,45 @@
+{
+  "name": "nomuon",
+  "version": "0.1.0",
+  "description": "a tiny user-friendly encryption utility",
+  "author": "Eli Skeggs <skeggse@gmail.com>",
+  "contributors": [
+    "zkbabb"
+  ],
+  "keywords": [
+    "cli",
+    "crypto",
+    "encryption",
+    "cryptography",
+    "cipher"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/skeggse/nomuon.git"
+  },
+  "homepage": "https://github.com/skeggse/nomuon",
+  "bugs": "https://github.com/skeggse/nomuon/issues",
+  "dependencies": {
+    "optimist": "~0.6.0",
+    "prompt": "~0.2.11",
+    "filed": "~0.1.0",
+    "progress": "~1.0.0"
+  },
+  "preferGlobal": true,
+  "bin": {
+    "nomuon": "./nomuon"
+  },
+  "main": "./nomuon",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "licenses": [
+    {
+      "type": "unlicense",
+      "url": "https://github.com/skeggse/nicely/blob/master/UNLICENSE"
+    }
+  ],
+  "engines": {
+    "node": "*"
+  }
+}
