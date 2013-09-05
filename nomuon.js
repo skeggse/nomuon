@@ -47,7 +47,8 @@ prompt.override = optimist
   })
   .options('md5', {
     describe: 'Print the md5 hash of the file',
-    boolean: true
+    boolean: true,
+    default: true
   })
   .argv;
 
