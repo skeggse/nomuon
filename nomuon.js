@@ -45,6 +45,10 @@ prompt.override = optimist
     describe: 'Decrypt the file',
     boolean: true
   })
+  .options('md5', {
+    describe: 'Print the md5 hash of the file',
+    boolean: true
+  })
   .argv;
 
 if (prompt.override.help) {
@@ -84,6 +88,8 @@ prompt.get(['cipher', {
   var constructor = crypto[decrypt ? 'createDecipher' : 'createCipher'];
   var cryptoStream = constructor.call(crypto, cipherType, result.password);
 
+  var hash = prompt.override.md5 && crypto.createHash('md5');
+
   // TODO: catch cryptoStream errors (usually caused by incorrect password)
 
   fs.stat(result.input, function(err, stats) {
@@ -120,6 +126,14 @@ prompt.get(['cipher', {
       }
       last = percent;
     });
+
+    if (hash) {
+      var hashSource = decrypt ? cryptoStream : input;
+      hashSource.on('data', hash.update.bind(hash));
+      hashSource.once('end', function() {
+        console.log('md5 hash', hash.digest('hex'));
+      });
+    }
 
     input.on('close', function() {
       console.log('completed input read');
