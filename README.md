@@ -61,6 +61,7 @@ TODO
 - Add prettyful colors :D
 - Fix incorrect password `uncaughtException` (error thrown instead of emitted)
 - Add more usage!
+- Add `-q` option
 
 Unlicense / Public Domain
 -------------------------

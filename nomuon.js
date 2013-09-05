@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-var filed = require('filed');
+var fs = require('fs');
 var crypto = require('crypto');
 var prompt = require('prompt');
 var optimist = require('optimist');
@@ -86,35 +86,51 @@ prompt.get(['cipher', {
 
   // TODO: catch cryptoStream errors (usually caused by incorrect password)
 
-  var ioerror = function(type) {
-    return function(err) {
-      if (err) {
-        if (err.code === 'ENOENT') {
-          console.error('could not locate', type, 'file', result[type]);
-          process.exit(1);
-        }
-        console.error(err.message);
-        process.exit(-1);
+  fs.stat(result.input, function(err, stats) {
+    if (err) {
+      if (err.code === 'ENOENT') {
+        console.error('could not locate input file', result.input);
+        process.exit(1);
       }
-    };
-  };
+      console.error(err.message);
+      process.exit(-1);
+    }
+    var input = fs.createReadStream(result.input);
+    var output = fs.createWriteStream(result.output);
 
-  var input = filed(result.input);
-  var output = filed(result.output);
-  input.on('error', ioerror('input'));
-  output.on('error', ioerror('output'));
+    input.pipe(cryptoStream).pipe(output);
 
-  input.pipe(cryptoStream).pipe(output);
+    // where should we listen for data?
+    var bar = new Progress('  [:bar] :percent :etas', {
+      total: stats.size,
+      width: 64,
+      complete: '=',
+      incomplete: ' '
+    });
 
-  input.on('end', function() {
-    console.log('completed input read');
-  });
+    // do some funky stuff to work around high number of unnecessary events
+    var rolling = 0, total = 0, last = -1;
+    input.on('data', function(data) {
+      total += data.length;
+      rolling += data.length;
+      var percent = (100 * total / stats.size) | 0;
+      if (last !== percent) {
+        bar.tick(rolling);
+        rolling = 0;
+      }
+      last = percent;
+    });
 
-  cryptoStream.on('end', function() {
-    console.log('completed', decrypt ? 'decryption' : 'encryption');
-  });
+    input.on('close', function() {
+      console.log('completed input read');
+    });
 
-  output.on('end', function() {
-    console.log('completed output write');
+    cryptoStream.on('end', function() {
+      console.log('completed', decrypt ? 'decryption' : 'encryption');
+    });
+
+    output.on('finish', function() {
+      console.log('completed output write');
+    });
   });
 });
