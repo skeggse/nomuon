@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 var filed = require('filed');
 var crypto = require('crypto');
 var prompt = require('prompt');

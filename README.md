@@ -15,7 +15,7 @@ Installation
 -------
 
 ```bash
-$ npm install nomuon
+$ npm install --global nomuon
 ```
 
 [github][]
@@ -24,6 +24,8 @@ $ npm install nomuon
 ```bash
 $ git clone https://github.com/skeggse/nomuon.git
 ```
+
+You'll need to figure out how to get this globally recognized this way.
 
 Test
 ----

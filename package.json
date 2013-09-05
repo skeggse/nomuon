@@ -1,6 +1,6 @@
 {
   "name": "nomuon",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "a tiny user-friendly encryption utility",
   "author": "Eli Skeggs <skeggse@gmail.com>",
   "contributors": [
@@ -27,9 +27,9 @@
   },
   "preferGlobal": true,
   "bin": {
-    "nomuon": "./nomuon"
+    "nomuon": "./nomuon.js"
   },
-  "main": "./nomuon",
+  "main": "./nomuon.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
